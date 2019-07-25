@@ -1,6 +1,11 @@
 const express = require("express");
+const connectDB = require("./config/db");
 
+//boot the express API
 const app = express();
+
+//connect to the mongoDB atalas
+connectDB();
 
 app.get("/", (req, res) => res.send("API running"));
 
