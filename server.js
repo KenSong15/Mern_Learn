@@ -7,6 +7,10 @@ const app = express();
 //connect to the mongoDB atalas
 connectDB();
 
+//initialize middleware
+app.use(express.json({ extended: false }));
+
+//server testing uri
 app.get("/", (req, res) => res.send("API running"));
 
 //define routes and redirect the request to each part
