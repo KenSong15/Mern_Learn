@@ -9,7 +9,7 @@ const User = require("../../models/User");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const bcrypt = require("bcryptjs");
-const { check, validationResult } = require("express-validator");
+const {check, validationResult} = require("express-validator");
 
 //@route:   GET api/auth
 //@desc:    Test route
@@ -20,7 +20,7 @@ router.get("/", auth, async (req, res) => {
         res.json(user);
     } catch (err) {
         console.log(err.message);
-        res.status(500).send("Server error");
+        res.status(500).send("Server error from basic authentication");
     }
 });
 
@@ -39,18 +39,18 @@ router.post(
         const errors = validationResult(req); // catch all possible error
         if (!errors.isEmpty()) {
             // send back a bad response and show error array
-            return res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({errors: errors.array()});
         }
 
-        const { email, password } = req.body;
+        const {email, password} = req.body;
 
         try {
             // see if users exists
-            let user = await User.findOne({ email });
+            let user = await User.findOne({email});
             if (!user) {
                 return res
                     .status(400)
-                    .json({ errors: [{ msg: "Invalid credentials" }] }); //do this formatting to match the error message format
+                    .json({errors: [{msg: "Invalid credentials"}]}); //do this formatting to match the error message format
             }
 
             //conpare the user name and password----------------------------------------
@@ -58,7 +58,7 @@ router.post(
             if (!isMatch) {
                 return res
                     .status(400)
-                    .json({ errors: [{ msg: "Invalid credentials" }] });
+                    .json({errors: [{msg: "Invalid credentials"}]});
             }
 
             //return jsonwebtoken
@@ -73,10 +73,10 @@ router.post(
             jwt.sign(
                 payload,
                 config.get("jwtToken"),
-                { expiresIn: 36000000 },
+                {expiresIn: 36000000},
                 (err, token) => {
                     if (err) throw err;
-                    res.json({ token });
+                    res.json({token});
                 }
             );
         } catch (err) {
