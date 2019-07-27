@@ -132,7 +132,7 @@ router.get("/", async (req, res) => {
         res.json(profiles);
     } catch (error) {
         console.error(error.message);
-        res.status(500).send("Server error by get all");
+        res.status(500).send("Server error by get all profile");
     }
 });
 

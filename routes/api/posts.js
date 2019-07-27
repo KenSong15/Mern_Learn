@@ -15,7 +15,7 @@ const User = require("../../models/User");
 //@route:   GET api/posts
 //@desc:    Test route
 //@access:  public (do not need a token to fire this route)
-router.get("/", (req, res) => res.send("Post router"));
+router.get("/test", (req, res) => res.send("Post router"));
 
 //@route:   POST api/posts
 //@desc:    create a post
@@ -55,5 +55,73 @@ router.post(
         }
     }
 );
+
+//@route:   Get api/posts
+//@desc:    get all avaliable post
+//@access:  private
+router.get("/", auth, async (req, res) => {
+    try {
+        const posts = await Post.find().sort({date: -1});
+        res.json(posts);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server error by get all posts");
+    }
+});
+
+//@route:   get api/posts/:post_id
+//@desc:    get one post refer post id
+//@access:  private
+router.get("/:id", auth, async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id);
+        if (!post) {
+            return res
+                .status(404)
+                .json({msg: "Post not found, post id invalid"});
+        }
+        res.json(post);
+    } catch (error) {
+        console.error(error.message);
+        if (error.kind === "ObjectId") {
+            return res
+                .status(404)
+                .json({msg: "Post not found, at least give me a post id"});
+        }
+        res.status(500).send("Server error by get post by id");
+    }
+});
+
+//@route:   delete api/posts
+//@desc:    delete one post refer to post id
+//@access:  private
+router.delete("/:id", auth, async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id);
+
+        if (!post) {
+            return res
+                .status(404)
+                .json({msg: "Post not found, post id invalid"}); //this means that the post does not exist
+        }
+
+        //check on user
+        if (post.user.toString() !== req.user.id) {
+            return res.status(401).json({msg: "User not authorized"});
+        }
+
+        await post.remove();
+
+        res.json({msg: "Post removed"});
+    } catch (error) {
+        console.error(error.message);
+        if (error.kind === "ObjectId") {
+            return res
+                .status(404)
+                .json({msg: "Post not found, at least give me a post id"});
+        }
+        res.status(500).send("Server error by delete by id");
+    }
+});
 
 module.exports = router;
