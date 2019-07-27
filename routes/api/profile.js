@@ -28,7 +28,7 @@ router.get("/me", auth, async (req, res) => {
         res.json(profile);
     } catch (err) {
         console.error(err.message);
-        res.status(500).send("Server Error1");
+        res.status(500).send("Server Error by get current profile");
     }
 });
 
@@ -102,16 +102,16 @@ router.post("/", [
                 );
 
                 res.json(profile);
+            } else {
+                //create
+                profile = new Profile(profileFields);
+                await profile.save();
+
+                res.json(profile);
             }
-
-            //create
-            profile = new Profile(profileFields);
-            await profile.save();
-
-            res.json(profile);
         } catch (err) {
             console.error(err.message);
-            res.status(500).send("Server error2");
+            res.status(500).send("Server error by create and update profile");
         }
 
         res.send("simple response");
@@ -119,7 +119,7 @@ router.post("/", [
 ]);
 
 //@route:   Get api/profile/
-//@desc:    get all profile
+//@desc:    get all profiles
 //@access:  public
 router.get("/", async (req, res) => {
     try {
@@ -130,7 +130,7 @@ router.get("/", async (req, res) => {
         res.json(profiles);
     } catch (error) {
         console.error(error.message);
-        res.status(500).send("Server error3");
+        res.status(500).send("Server error by get all");
     }
 });
 
@@ -153,7 +153,26 @@ router.get("/user/:user_id", async (req, res) => {
         if (error.kind == "ObjectId") {
             return res.status(400).json({msg: "Profile not found"});
         }
-        res.status(500).send("Server error3");
+        res.status(500).send("Server error by find by specific");
+    }
+});
+
+//@route:   Delete api/profile/
+//@desc:    delete profile, user and posts
+//@access:  private
+router.delete("/", auth, async (req, res) => {
+    try {
+        //remove profile
+        await Profile.findOneAndRemove({user: req.user.id});
+
+        //remove user
+        await User.findOneAndRemove({_id: req.user.id});
+        res.json({msg: "User deleted"});
+
+        //todo: remove user's post
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server error by delete");
     }
 });
 
