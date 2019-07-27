@@ -1,4 +1,6 @@
 {
-  "mongoURI": "mongodb+srv://kensong:kensong@devconnector-a42ck.mongodb.net/test?retryWrites=true&w=majority",
-  "jwtToken": "myJwtSecret"
+    "mongoURI": "mongodb+srv://kensong:kensong@devconnector-a42ck.mongodb.net/test?retryWrites=true&w=majority",
+    "jwtToken": "myJwtSecret",
+    "githubClientId": "7aeb9fec8f331e91e53f",
+    "githubSecret": "9a4f4e903ad452a5310cb72a5effefe3bc64daa2"
 }
