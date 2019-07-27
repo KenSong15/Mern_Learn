@@ -34,7 +34,7 @@ router.get("/me", auth, async (req, res) => {
     }
 });
 
-//@route:   Post api/profile/me
+//@route:   POST api/profile/me
 //@desc:    create or update a user's profile
 //@access:  private
 router.post("/", [
@@ -120,7 +120,7 @@ router.post("/", [
     }
 ]);
 
-//@route:   Get api/profile/
+//@route:   GET api/profile/
 //@desc:    get all profiles
 //@access:  public
 router.get("/", async (req, res) => {
@@ -136,7 +136,7 @@ router.get("/", async (req, res) => {
     }
 });
 
-//@route:   Get api/profile/user/:user_id
+//@route:   GET api/profile/user/:user_id
 //@desc:    get profile by user id
 //@access:  public
 router.get("/user/:user_id", async (req, res) => {
@@ -159,7 +159,7 @@ router.get("/user/:user_id", async (req, res) => {
     }
 });
 
-//@route:   Delete api/profile/
+//@route:   DELETE api/profile/
 //@desc:    delete profile, user and posts
 //@access:  private
 router.delete("/", auth, async (req, res) => {
@@ -178,7 +178,7 @@ router.delete("/", auth, async (req, res) => {
     }
 });
 
-//@route:   put api/profile/experience
+//@route:   PUT api/profile/experience
 //@desc:    add profile experience
 //@access:  private
 router.put(
@@ -238,7 +238,7 @@ router.put(
     }
 );
 
-//@route:   delete api/profile/experience/:exp_id
+//@route:   DELETE api/profile/experience/:exp_id
 //@desc:    delete experience from profile
 //@access:  private
 router.delete("/experience/:exp_id", auth, async (req, res) => {
@@ -261,7 +261,7 @@ router.delete("/experience/:exp_id", auth, async (req, res) => {
     }
 });
 
-//@route:   put api/profile/education
+//@route:   PUT api/profile/education
 //@desc:    add profile education
 //@access:  private
 router.put(
@@ -324,7 +324,7 @@ router.put(
     }
 );
 
-//@route:   delete api/profile/education/:edu_id
+//@route:   DELETE api/profile/education/:edu_id
 //@desc:    delete education from profile
 //@access:  private
 router.delete("/education/:edu_id", auth, async (req, res) => {
@@ -347,7 +347,7 @@ router.delete("/education/:edu_id", auth, async (req, res) => {
     }
 });
 
-//@route:   get api/profile/github/:username
+//@route:   GET api/profile/github/:username
 //@desc:    get user repos from github
 //@access:  public
 router.get("/github/:username", (req, res) => {

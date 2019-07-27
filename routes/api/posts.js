@@ -56,7 +56,7 @@ router.post(
     }
 );
 
-//@route:   Get api/posts
+//@route:   GET api/posts
 //@desc:    get all avaliable post
 //@access:  private
 router.get("/", auth, async (req, res) => {
@@ -69,7 +69,7 @@ router.get("/", auth, async (req, res) => {
     }
 });
 
-//@route:   get api/posts/:post_id
+//@route:   GET api/posts/:post_id
 //@desc:    get one post refer post id
 //@access:  private
 router.get("/:id", auth, async (req, res) => {
@@ -92,7 +92,7 @@ router.get("/:id", auth, async (req, res) => {
     }
 });
 
-//@route:   delete api/posts
+//@route:   DELETE api/posts
 //@desc:    delete one post refer to post id
 //@access:  private
 router.delete("/:id", auth, async (req, res) => {
@@ -121,6 +121,63 @@ router.delete("/:id", auth, async (req, res) => {
                 .json({msg: "Post not found, at least give me a post id"});
         }
         res.status(500).send("Server error by delete by id");
+    }
+});
+
+//@route:   PUT api/posts/like/:id
+//@desc:    Like a post
+//@access:  Private
+router.put("/like/:id", auth, async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id);
+
+        //check if this post is already been liked by this user
+        if (
+            post.likes.filter(like => like.user.toString() === req.user.id)
+                .length > 0
+        ) {
+            return res
+                .status(400)
+                .json({msg: "Post already been like by this user."});
+        }
+
+        post.likes.unshift({user: req.user.id});
+        await post.save();
+        res.json(post.likes);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server error by like a post");
+    }
+});
+
+//@route:   PUT api/posts/unlike/:id
+//@desc:    remove Like a post
+//@access:  Private
+router.put("/unlike/:id", auth, async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id);
+
+        //check if this post is already been liked by this user
+        if (
+            post.likes.filter(like => like.user.toString() === req.user.id)
+                .length === 0
+        ) {
+            return res
+                .status(400)
+                .json({msg: "Post has not yet been liked by this user."});
+        }
+
+        //get remove index
+        const removeIndex = post.likes
+            .map(like => like.user.toString())
+            .indexOf(req.user.id);
+        post.likes.splice(removeIndex, 1);
+
+        await post.save();
+        res.json(post.likes);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server error by unlike a post");
     }
 });
 
