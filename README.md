@@ -13,3 +13,5 @@ to run this mern fullStack project:
 -- npm start
 
 walk through: initialize project and dependency -> connect to DB -> make route and model
+
+The server is on the root directory with node.js and its entry is server.js, the react fountend are in client folder.
