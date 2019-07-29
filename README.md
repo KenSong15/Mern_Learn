@@ -6,6 +6,10 @@ to run this mern fullStack project:
 
 -- npm run server
 
-2. xxx
+2. have the react application on client folder
+
+-- cd client
+
+-- npm start
 
 walk through: initialize project and dependency -> connect to DB -> make route and model
